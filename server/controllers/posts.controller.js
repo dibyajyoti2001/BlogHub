@@ -35,6 +35,12 @@ const createPost = asyncHandler(async (req, res) => {
   return res.status(201).json(new ApiResponse(200, createdPost, "Success"));
 });
 
+const uploadFile = asyncHandler(async (req, res) => {
+  return res
+    .status(201)
+    .json(new ApiResponse(200, "Image has been uploaded successfully"));
+});
+
 const getAllPosts = asyncHandler(async (req, res) => {
   const query = req.query;
 
@@ -160,6 +166,7 @@ const deletePost = asyncHandler(async (req, res) => {
 
 export {
   createPost,
+  uploadFile,
   getAllPosts,
   getPostById,
   getUserPosts,

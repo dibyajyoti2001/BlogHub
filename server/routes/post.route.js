@@ -8,11 +8,13 @@ import {
   getUserPosts,
   updatePost,
   deletePost,
+  uploadFile,
 } from "../controllers/posts.controller.js";
 
 const router = Router();
 
 router.route("/create").post(upload.single("photo"), verifyJWT, createPost);
+router.route("/upload").post(upload.single("photo"), uploadFile);
 router.route("/all-posts").get(getAllPosts);
 router.route("/specific-post/:id").get(getPostById);
 router.route("/user-posts/:id").get(verifyJWT, getUserPosts);
