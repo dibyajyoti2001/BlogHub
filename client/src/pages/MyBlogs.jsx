@@ -1,12 +1,11 @@
-import HomePosts from "../components/HomePosts";
-import Navbar from "../components/Navbar";
-import config from "../config/config";
-import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import { useEffect, useState } from "react";
+import HomePosts from "../components/HomePosts";
 import Loader from "../components/Loader";
 import { useSelector } from "react-redux";
 
-export default function Home() {
+export default function MyBlogs() {
   const { search } = useLocation();
   const [posts, setPosts] = useState([]);
   const [noResults, setNoResults] = useState(false);
@@ -16,7 +15,7 @@ export default function Home() {
   const fetchPosts = async () => {
     setLoader(true);
     try {
-      const res = await getAllPosts(search);
+      const res = await getUserPosts(user._id);
       setPosts(res.data);
       if (res.data.length === 0) {
         setNoResults(true);
@@ -33,9 +32,8 @@ export default function Home() {
   useEffect(() => {
     fetchPosts();
   }, [search]);
-
   return (
-    <>
+    <div>
       <Navbar />
       <div className="px-8 md:px-[200px] min-h-[80vh]">
         {loader ? (
@@ -54,6 +52,6 @@ export default function Home() {
           <h3 className="text-center font-bold mt-16">No posts available</h3>
         )}
       </div>
-    </>
+    </div>
   );
 }

@@ -69,6 +69,10 @@ const createPost = (data) => {
   return Axios.post("/post/create", data);
 };
 
+const upload = () => {
+  return Axios.post("/post/upload");
+};
+
 const getAllPosts = () => {
   return Axios.get("/post/all-posts");
 };
@@ -102,6 +106,7 @@ export {
   deleteComment,
   postComment,
   createPost,
+  upload,
   updatePost,
   deletePost,
   getAllPosts,
