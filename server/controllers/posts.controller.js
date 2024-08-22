@@ -5,18 +5,12 @@ import { Post } from "../models/post.model.js";
 import { Comment } from "../models/comment.model.js";
 
 const createPost = asyncHandler(async (req, res) => {
-  const { title, desc, categories } = req.body;
-  const userId = req.user._id;
-  const username = req.user.username;
+  const { title, desc, categories, photo } = req.body;
+  const userId = req.user?._id;
+  const username = req.user?.username;
 
-  if (!title || !desc || !categories) {
+  if (!title || !desc || !categories || !photo) {
     throw new ApiError(400, "All fields are required");
-  }
-
-  const photoLocalPath = req.file?.path;
-
-  if (!photoLocalPath) {
-    throw new ApiError(400, "Photo must be required");
   }
 
   const createdPost = await Post.create({
@@ -25,7 +19,7 @@ const createPost = asyncHandler(async (req, res) => {
     username,
     userId,
     categories,
-    photo: photoLocalPath,
+    photo,
   });
 
   if (!createdPost) {
@@ -36,25 +30,23 @@ const createPost = asyncHandler(async (req, res) => {
 });
 
 const uploadFile = asyncHandler(async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json(new ApiResponse(400, "No file uploaded"));
+  }
   return res
     .status(201)
     .json(new ApiResponse(200, "Image has been uploaded successfully"));
 });
 
 const getAllPosts = asyncHandler(async (req, res) => {
-  const query = req.query;
+  const { title } = req.query;
+  let query = {};
 
-  if (!query) {
-    throw new ApiError(400, "Query not found");
+  if (title) {
+    query.title = { $regex: title, $options: "i" };
   }
 
-  const searchFilter = query.search
-    ? {
-        title: { $regex: query.search, $options: "i" },
-      }
-    : {};
-
-  const allPosts = await Post.find(searchFilter);
+  const allPosts = await Post.find(query);
 
   if (!allPosts) {
     throw new ApiError(500, "Something went wrong while geting posts");
@@ -103,13 +95,13 @@ const getUserPosts = asyncHandler(async (req, res) => {
 
 const updatePost = asyncHandler(async (req, res) => {
   const postId = req.params.id;
-  const { title, desc, categories, username, userId } = req.body;
+  const { title, desc, categories, username, userId, photo } = req.body;
 
   if (!postId) {
     throw new ApiError(400, "Id not found");
   }
 
-  if (!title || !desc || !categories || !username || !userId) {
+  if (!title || !desc || !categories || !username || !userId || !photo) {
     throw new ApiError(400, "All details must be required");
   }
 
@@ -117,12 +109,6 @@ const updatePost = asyncHandler(async (req, res) => {
 
   if (!post) {
     throw new ApiError(404, "Post not found");
-  }
-
-  const photoLocalPath = req.file?.path;
-
-  if (!photoLocalPath) {
-    throw new ApiError(400, "Photo must be required");
   }
 
   const updatedPost = await Post.findByIdAndUpdate(
@@ -134,7 +120,7 @@ const updatePost = asyncHandler(async (req, res) => {
         categories,
         username,
         userId,
-        photo: photoLocalPath,
+        photo,
       },
     },
     { new: true }

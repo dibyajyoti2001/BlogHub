@@ -4,8 +4,9 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { Comment } from "../models/comment.model.js";
 
 const createComment = asyncHandler(async (req, res) => {
-  const { comment, author, postId } = req.body;
-  const userId = req.user._id;
+  const { comment, postId } = req.body;
+  const author = req.user?.username;
+  const userId = req.user?._id;
 
   if (!comment || !author || !postId || !userId) {
     throw new ApiError(400, "All fields are required");

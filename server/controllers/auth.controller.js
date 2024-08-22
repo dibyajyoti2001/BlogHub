@@ -5,7 +5,6 @@ import { User } from "../models/user.model.js";
 import { Post } from "../models/post.model.js";
 import { Comment } from "../models/comment.model.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -198,6 +197,32 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
+const refetchUser = asyncHandler(async (req, res) => {
+  const token = req.cookies.refreshToken;
+
+  if (!token) {
+    throw new ApiError(400, "Token missing");
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+
+    const user = await User.findById(decoded._id).select(
+      "-password -refreshToken"
+    );
+
+    if (!user) {
+      throw new ApiError(404, "User not found");
+    }
+
+    return res
+      .status(200)
+      .json(new ApiResponse(200, user, "User refetched successfully"));
+  } catch (error) {
+    throw new ApiError(401, error.message || "Invalid or expired token");
+  }
+});
+
 const getCurrentUser = asyncHandler(async (req, res) => {
   return res
     .status(201)
@@ -227,16 +252,12 @@ const updateUserDetails = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Invalid current password");
   }
 
-  // Hash the new password before updating
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  // Update user data
   user.username = username;
-  user.password = hashedPassword;
-  await user.save();
+  user.password = password;
+  await user.save({ validateBeforeSave: false });
 
-  // Remove email from the response
-  const { email, ...updatedUser } = user.toObject();
+  const updatedUser = user.toObject();
+  delete updatedUser.password;
 
   // Return response
   return res
@@ -270,6 +291,7 @@ export {
   loginUser,
   logoutUser,
   refreshAccessToken,
+  refetchUser,
   getCurrentUser,
   updateUserDetails,
   deleteUserDetails,
