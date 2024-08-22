@@ -30,9 +30,9 @@ const refreshUser = (data) => {
   return Axios.post("/auth/refresh-token", data);
 };
 
-// const refetchUser = () => {
-//   return Axios.get("/auth/refetch-user");
-// };
+const refetchUser = () => {
+  return Axios.get("/auth/refetch-user");
+};
 
 const currentUser = () => {
   return Axios.get("/auth/current-user");
@@ -105,7 +105,7 @@ export {
   refreshUser,
   logoutUser,
   registerUser,
-  // refetchUser,
+  refetchUser,
   currentUser,
   updateUser,
   deleteUser,

@@ -12,7 +12,6 @@ export default function Home() {
   const [noResults, setNoResults] = useState(false);
   const [loader, setLoader] = useState(false);
   const { user } = useContext(UserContext);
-  // const navigate = useNavigate();
 
   const fetchPosts = async () => {
     setLoader(true);
@@ -30,19 +29,6 @@ export default function Home() {
       setLoader(false);
     }
   };
-
-  // const checkUserAuthentication = async () => {
-  //   try {
-  //     const res = await refetchUser();
-  //     setUser(res.data.data);
-  //   } catch (error) {
-  //     navigate("/login");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   checkUserAuthentication();
-  // }, []);
 
   useEffect(() => {
     fetchPosts();

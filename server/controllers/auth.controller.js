@@ -197,31 +197,31 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
-// const refetchUser = asyncHandler(async (req, res) => {
-//   const token = req.cookies.refreshToken;
+const refetchUser = asyncHandler(async (req, res) => {
+  const token = req.cookies.refreshToken;
 
-//   if (!token) {
-//     throw new ApiError(400, "Token missing");
-//   }
+  if (!token) {
+    throw new ApiError(400, "Token missing");
+  }
 
-//   try {
-//     const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+  try {
+    const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
 
-//     const user = await User.findById(decoded._id).select(
-//       "-password -refreshToken"
-//     );
+    const user = await User.findById(decoded._id).select(
+      "-password -refreshToken"
+    );
 
-//     if (!user) {
-//       throw new ApiError(404, "User not found");
-//     }
+    if (!user) {
+      throw new ApiError(404, "User not found");
+    }
 
-//     return res
-//       .status(200)
-//       .json(new ApiResponse(200, user, "User refetched successfully"));
-//   } catch (error) {
-//     throw new ApiError(401, error.message || "Invalid or expired token");
-//   }
-// });
+    return res
+      .status(200)
+      .json(new ApiResponse(200, user, "User refetched successfully"));
+  } catch (error) {
+    throw new ApiError(401, error.message || "Invalid or expired token");
+  }
+});
 
 const getCurrentUser = asyncHandler(async (req, res) => {
   return res
@@ -291,7 +291,7 @@ export {
   loginUser,
   logoutUser,
   refreshAccessToken,
-  // refetchUser,
+  refetchUser,
   getCurrentUser,
   updateUserDetails,
   deleteUserDetails,
