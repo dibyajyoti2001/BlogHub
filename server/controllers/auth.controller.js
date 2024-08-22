@@ -133,7 +133,8 @@ const logoutUser = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Strict",
   };
 
   return res
@@ -179,7 +180,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     // send to user by cookies
     const options = {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
     };
 
     return res

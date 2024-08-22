@@ -1,7 +1,7 @@
 import HomePosts from "../components/HomePosts";
 import Navbar from "../components/Navbar";
 import { useContext, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import { getAllPosts } from "../server/api";
 import { UserContext } from "../context/UserContext";
@@ -11,7 +11,8 @@ export default function Home() {
   const [posts, setPosts] = useState([]);
   const [noResults, setNoResults] = useState(false);
   const [loader, setLoader] = useState(false);
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const fetchPosts = async () => {
     setLoader(true);
@@ -29,6 +30,19 @@ export default function Home() {
       setLoader(false);
     }
   };
+
+  const checkUserAuthentication = async () => {
+    try {
+      const res = await refetchUser();
+      setUser(res.data.data);
+    } catch (error) {
+      navigate("/login");
+    }
+  };
+
+  useEffect(() => {
+    checkUserAuthentication();
+  }, []);
 
   useEffect(() => {
     fetchPosts();
