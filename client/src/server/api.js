@@ -36,7 +36,7 @@ const refreshUser = (data) => {
 };
 
 const refetchUser = () => {
-  return Axios.get("/auth/refetch-user");
+  return Axios.get("/auth/refetch-user", { withCredentials: true });
 };
 
 const currentUser = () => {

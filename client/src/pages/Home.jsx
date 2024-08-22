@@ -55,6 +55,7 @@ export default function Home() {
           <h3 className="text-center font-bold mt-16">No posts available</h3>
         )}
       </div>
+      <div className="mt-8"></div>
     </>
   );
 }
