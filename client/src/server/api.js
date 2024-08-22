@@ -4,12 +4,7 @@ import { LocalStorage } from "../utils";
 // Add an interceptor to set authorization header with user token before requests
 Axios.interceptors.request.use(
   function (config) {
-    // Retrieve user token from local storage
-    const token = LocalStorage.get("token");
-    // Set authorization header with bearer token
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    config.withCredentials = true;
     return config;
   },
   function (error) {
