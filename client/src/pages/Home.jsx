@@ -34,6 +34,7 @@ export default function Home() {
   const checkUserAuthentication = async () => {
     try {
       const res = await refetchUser();
+      console.log(res.data.data);
       setUser(res.data.data);
     } catch (error) {
       navigate("/login");
