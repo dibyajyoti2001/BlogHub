@@ -3,29 +3,35 @@ import { useState } from "react";
 import { registerUser } from "../server/api";
 
 export default function Register() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState(false);
   const navigate = useNavigate();
 
-  const userData = {
-    username,
-    email,
-    password,
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleRegister = async () => {
     try {
-      const res = await registerUser(userData);
-      setUsername(res.data.username);
-      setEmail(res.data.email);
-      setPassword(res.data.password);
+      const res = await registerUser(formData);
+      setFormData({
+        username: res.data.username,
+        email: res.data.email,
+        password: res.data.password,
+      });
       setError(false);
       navigate("/login");
-    } catch (err) {
+    } catch (error) {
       setError(true);
-      console.log(err);
+      alert(error.message);
     }
   };
 
@@ -43,26 +49,32 @@ export default function Register() {
         <div className="flex flex-col justify-center items-center space-y-4 w-[80%] md:w-[25%]">
           <h1 className="text-xl font-bold text-left">Create an account</h1>
           <input
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full px-4 py-2 border-2 border-black outline-0"
+            name="username"
+            onChange={handleChange}
+            value={formData.username}
+            className="w-full px-4 py-2 border-2 rounded border-black outline-0"
             type="text"
             placeholder="Enter your username"
           />
           <input
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border-2 border-black outline-0"
+            name="email"
+            onChange={handleChange}
+            value={formData.email}
+            className="w-full px-4 py-2 border-2 rounded border-black outline-0"
             type="text"
             placeholder="Enter your email"
           />
           <input
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 border-2 border-black outline-0"
+            name="password"
+            onChange={handleChange}
+            value={formData.password}
+            className="w-full px-4 py-2 border-2 rounded border-black outline-0"
             type="password"
             placeholder="Enter your password"
           />
           <button
             onClick={handleRegister}
-            className="w-full px-4 py-4 text-lg font-bold text-white bg-black rounded-lg hover:bg-gray-500 hover:text-black "
+            className="w-full px-4 py-4 text-lg font-bold text-white bg-black rounded-lg"
           >
             Register
           </button>

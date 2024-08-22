@@ -1,49 +1,63 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { FaBars } from "react-icons/fa";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Menu from "./Menu";
-import { useSelector } from "react-redux";
+import { UserContext } from "../context/UserContext";
 
 export default function Navbar() {
-  const [prompt, setPrompt] = useState("");
   const [menu, setMenu] = useState(false);
   const navigate = useNavigate();
   const path = useLocation().pathname;
+  const [searchQuery, setSearchQuery] = useState("");
 
   const showMenu = () => {
     setMenu(!menu);
   };
 
-  const user = useSelector((state) => state.user.user);
+  const { user } = useContext(UserContext);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/?title=${searchQuery}`);
+      setSearchQuery("");
+    } else {
+      navigate("/");
+    }
+  };
   return (
     <div className="flex items-center justify-between px-6 md:px-[200px] py-4">
       <h1 className="text-lg md:text-xl font-extrabold">
-        <Link to="/">Blog Market</Link>
+        <Link to="/">Blog Hub</Link>
       </h1>
       {path === "/" && (
-        <div className="flex justify-center items-center space-x-0">
-          <p
-            onClick={() =>
-              navigate(prompt ? "?search=" + prompt : navigate("/"))
-            }
-            className="cursor-pointer"
-          >
+        <form
+          onSubmit={handleSearch}
+          className="flex justify-center items-center space-x-0 bg-slate-200 rounded-full px-5 py-2"
+        >
+          <button type="submit" className="cursor-pointer">
             <BsSearch />
-          </p>
+          </button>
           <input
-            onChange={(e) => setPrompt(e.target.value)}
-            className="outline-none px-3 "
+            className="outline-none px-3 bg-transparent"
             placeholder="Search a post"
             type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
-        </div>
+        </form>
       )}
       <div className="hidden md:flex items-center justify-center space-x-2 md:space-x-4">
         {user ? (
-          <h3>
-            <Link to="/write">Write</Link>
-          </h3>
+          <>
+            <h3>
+              <Link to="/">Home</Link>
+            </h3>
+            <h3>
+              <Link to="/write">Write</Link>
+            </h3>
+          </>
         ) : (
           <h3>
             <Link to="/login">Login</Link>

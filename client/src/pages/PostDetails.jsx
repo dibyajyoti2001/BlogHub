@@ -3,9 +3,8 @@ import Comment from "../components/Comment";
 import Navbar from "../components/Navbar";
 import { BiEdit } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Loader from "../components/Loader";
-import { useSelector } from "react-redux";
 import config from "../config/config";
 import {
   createComment,
@@ -13,11 +12,13 @@ import {
   postComment,
   getPostById,
 } from "../server/api";
+import { UserContext } from "../context/UserContext";
 
 export default function PostDetails() {
+  const imageUrl = config.imagesUrl;
   const postId = useParams().id;
   const [post, setPost] = useState({});
-  const user = useSelector((state) => state.user.user);
+  const { user } = useContext(UserContext);
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [loader, setLoader] = useState(false);
@@ -26,18 +27,18 @@ export default function PostDetails() {
   const fetchPost = async () => {
     try {
       const res = await getPostById(postId);
-      setPost(res.data);
-    } catch (err) {
-      console.log(err);
+      setPost(res.data.data);
+    } catch (error) {
+      alert(error.message);
     }
   };
 
   const handleDeletePost = async () => {
     try {
-      const res = await deletePost(postId);
+      await deletePost(postId);
       navigate("/");
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      alert(error.message);
     }
   };
 
@@ -49,11 +50,11 @@ export default function PostDetails() {
     setLoader(true);
     try {
       const res = await postComment(postId);
-      setComments(res.data);
+      setComments(res.data.data);
       setLoader(false);
-    } catch (err) {
+    } catch (error) {
       setLoader(true);
-      console.log(err);
+      alert(error.message);
     }
   };
 
@@ -61,20 +62,25 @@ export default function PostDetails() {
     fetchPostComments();
   }, [postId]);
 
-  const commentData = {
-    comment: comment,
-    author: user.username,
-    postId: postId,
-    userId: user._id,
-  };
-
   const handleAddComment = async (e) => {
     e.preventDefault();
+
+    if (!user) {
+      return;
+    }
+
+    const commentData = {
+      comment: comment,
+      author: user.username,
+      postId: postId,
+      userId: user._id,
+    };
+
     try {
       const res = await createComment(commentData);
       window.location.reload(true);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      alert(error.message);
     }
   };
   return (
@@ -112,20 +118,20 @@ export default function PostDetails() {
             </div>
           </div>
           <img
-            src={config.imagesUrl + post.photo}
+            src={
+              post.photo ? `${imageUrl}/${post.photo.split("\\").pop()}` : null
+            }
             className="w-full  mx-auto mt-8"
-            alt=""
+            alt="photo"
           />
           <p className="mx-auto mt-8">{post.desc}</p>
           <div className="flex items-center mt-8 space-x-4 font-semibold">
             <p>Categories:</p>
             <div className="flex justify-center items-center space-x-2">
-              {post.categories?.map((c, i) => (
-                <>
-                  <div key={i} className="bg-gray-300 rounded-lg px-3 py-1">
-                    {c}
-                  </div>
-                </>
+              {post.categories?.map((c) => (
+                <div key={c} className="bg-slate-200 rounded-lg px-3 py-1">
+                  {c}
+                </div>
               ))}
             </div>
           </div>
@@ -136,16 +142,16 @@ export default function PostDetails() {
             ))}
           </div>
           {/* write a comment */}
-          <div className="w-full flex flex-col mt-4 md:flex-row">
+          <div className="w-full mb-5 flex flex-col mt-4 md:flex-row">
             <input
               onChange={(e) => setComment(e.target.value)}
               type="text"
               placeholder="Write a comment"
-              className="md:w-[80%] outline-none py-2 px-4 mt-4 md:mt-0"
+              className="md:w-[80%] outline-none py-2 px-4 mt-4 md:mt-0 mr-5 bg-slate-100 rounded"
             />
             <button
               onClick={handleAddComment}
-              className="bg-black text-sm text-white px-2 py-2 md:w-[20%] mt-4 md:mt-0"
+              className="bg-black text-sm rounded text-white px-2 py-2 md:w-[20%] mt-4 md:mt-0"
             >
               Add Comment
             </button>

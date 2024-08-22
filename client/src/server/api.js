@@ -35,6 +35,10 @@ const refreshUser = (data) => {
   return Axios.post("/auth/refresh-token", data);
 };
 
+const refetchUser = () => {
+  return Axios.get("/auth/refetch-user");
+};
+
 const currentUser = () => {
   return Axios.get("/auth/current-user");
 };
@@ -66,15 +70,23 @@ const deleteComment = (commentId) => {
 
 // Post routes
 const createPost = (data) => {
-  return Axios.post("/post/create", data);
+  return Axios.post("/post/create", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
-const upload = () => {
-  return Axios.post("/post/upload");
+const upload = (data) => {
+  return Axios.post("/post/upload", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
-const getAllPosts = () => {
-  return Axios.get("/post/all-posts");
+const getAllPosts = (searchQuery = "") => {
+  return Axios.get(`/post/all-posts${searchQuery}`);
 };
 
 const getPostById = (postId) => {
@@ -98,6 +110,7 @@ export {
   refreshUser,
   logoutUser,
   registerUser,
+  refetchUser,
   currentUser,
   updateUser,
   deleteUser,

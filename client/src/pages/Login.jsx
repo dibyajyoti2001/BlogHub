@@ -1,24 +1,33 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { setUser } from "../store/userSlice";
+import { useContext, useState } from "react";
 import { loginUser } from "../server/api.js";
+import { UserContext } from "../context/UserContext";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState(false);
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
-  const loginData = { email, password };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const handleLogin = async () => {
     try {
-      const res = await loginUser(loginData);
+      const res = await loginUser(formData);
       setUser(res.data);
       navigate("/");
-    } catch (err) {
+    } catch (error) {
       setError(true);
-      console.log(err);
+      alert(error.message);
     }
   };
   return (
@@ -37,20 +46,24 @@ export default function Login() {
             Log in to your account
           </h1>
           <input
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border-2 border-black outline-0"
+            name="email"
+            onChange={handleChange}
+            value={formData.email}
+            className="w-full px-4 py-2 border-2 border-black rounded outline-0"
             type="text"
             placeholder="Enter your email"
           />
           <input
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 border-2 border-black outline-0"
+            name="password"
+            onChange={handleChange}
+            value={formData.password}
+            className="w-full px-4 py-2 border-2 border-black rounded outline-0"
             type="password"
             placeholder="Enter your password"
           />
           <button
             onClick={handleLogin}
-            className="w-full px-4 py-4 text-lg font-bold text-white bg-black rounded-lg hover:bg-gray-500 hover:text-black "
+            className="w-full px-4 py-4 text-lg font-bold text-white bg-black rounded-lg"
           >
             Log in
           </button>

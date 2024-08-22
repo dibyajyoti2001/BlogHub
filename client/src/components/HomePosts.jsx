@@ -1,17 +1,17 @@
 import config from "../config/config";
 
 export default function HomePosts({ post }) {
+  const imageUrl = config.imagesUrl;
+
   return (
     <div className="w-full flex mt-8 space-x-4">
-      {/* left */}
       <div className="w-[35%] h-[200px] flex justify-center items-center">
         <img
-          src={config.imagesUrl + post.photo}
-          alt=""
+          src={`${imageUrl}/${post.photo.split("\\").pop()}`}
+          alt="photo"
           className="h-full w-full object-cover"
         />
       </div>
-      {/* right */}
       <div className="flex flex-col w-[65%]">
         <h1 className="text-xl font-bold md:mb-2 mb-1 md:text-2xl">
           {post.title}

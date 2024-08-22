@@ -1,17 +1,16 @@
 import config from "../config/config.js";
 
-export default function ProfilePosts() {
+export default function ProfilePosts({ p }) {
+  const imageUrl = config.imagesUrl;
   return (
     <div className="w-full flex mt-8 space-x-4">
-      {/* left */}
       <div className="w-[35%] h-[200px] flex justify-center items-center">
         <img
-          src={config.imagesUrl + p.photo}
-          alt=""
+          src={`${imageUrl}/${p.photo.split("\\").pop()}`}
+          alt="photo"
           className="h-full w-full object-cover"
         />
       </div>
-      {/* right */}
       <div className="flex flex-col w-[65%]">
         <h1 className="text-xl font-bold md:mb-2 mb-1 md:text-2xl">
           {p.title}

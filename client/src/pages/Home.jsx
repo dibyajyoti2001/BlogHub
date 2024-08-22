@@ -1,32 +1,32 @@
 import HomePosts from "../components/HomePosts";
 import Navbar from "../components/Navbar";
-import config from "../config/config";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Loader from "../components/Loader";
-import { useSelector } from "react-redux";
+import { getAllPosts } from "../server/api";
+import { UserContext } from "../context/UserContext";
 
 export default function Home() {
   const { search } = useLocation();
   const [posts, setPosts] = useState([]);
   const [noResults, setNoResults] = useState(false);
   const [loader, setLoader] = useState(false);
-  const user = useSelector((state) => state.user.user);
+  const { user } = useContext(UserContext);
 
   const fetchPosts = async () => {
     setLoader(true);
     try {
       const res = await getAllPosts(search);
-      setPosts(res.data);
-      if (res.data.length === 0) {
+      setPosts(res.data.data);
+      if (res.data.data.length === 0) {
         setNoResults(true);
       } else {
         setNoResults(false);
       }
       setLoader(false);
-    } catch (err) {
-      console.log(err);
-      setLoader(true);
+    } catch (error) {
+      alert(error.message);
+      setLoader(false);
     }
   };
 
@@ -44,11 +44,12 @@ export default function Home() {
           </div>
         ) : !noResults ? (
           posts.map((post) => (
-            <>
-              <Link to={user ? `/posts/post/${post._id}` : "/login"}>
-                <HomePosts key={post._id} post={post} />
-              </Link>
-            </>
+            <Link
+              key={post._id}
+              to={user ? `/posts/post/${post._id}` : "/login"}
+            >
+              <HomePosts post={post} />
+            </Link>
           ))
         ) : (
           <h3 className="text-center font-bold mt-16">No posts available</h3>

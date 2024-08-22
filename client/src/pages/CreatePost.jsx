@@ -1,62 +1,69 @@
 import Navbar from "../components/Navbar";
 import { ImCross } from "react-icons/im";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { createPost, upload } from "../server/api";
+import { UserContext } from "../context/UserContext";
 
 export default function CreatePost() {
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
-  const [file, setFile] = useState(null);
-  const [cat, setCat] = useState("");
-  const [cats, setCats] = useState([]);
-  const user = useSelector((state) => state.user.user);
-
+  const [formData, setFormData] = useState({
+    title: "",
+    desc: "",
+    file: null,
+    cat: "",
+    cats: [],
+  });
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === "file") {
+      setFormData({ ...formData, file: files[0] });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
   const deleteCategory = (i) => {
-    let updatedCats = [...cats];
-    updatedCats.splice(i);
-    setCats(updatedCats);
+    const updatedCats = [...formData.cats];
+    updatedCats.splice(i, 1);
+    setFormData({ ...formData, cats: updatedCats });
   };
 
   const addCategory = () => {
-    let updatedCats = [...cats];
-    updatedCats.push(cat);
-    setCat("");
-    setCats(updatedCats);
+    const updatedCats = [...formData.cats, formData.cat];
+    setFormData({ ...formData, cats: updatedCats, cat: "" });
   };
 
   const handleCreate = async (e) => {
     e.preventDefault();
+
     const post = {
-      title,
-      desc,
+      title: formData.title,
+      desc: formData.desc,
       username: user.username,
       userId: user._id,
-      categories: cats,
+      categories: formData.cats,
     };
 
-    if (file) {
+    if (formData.file) {
       const data = new FormData();
-      const filename = Date.now() + file.name;
-      data.append("img", filename);
-      data.append("file", file);
+      const filename = Date.now() + formData.file.name;
+      data.append("photo", formData.file, filename);
       post.photo = filename;
-      //img upload
       try {
         await upload(data);
-      } catch (err) {
-        console.log(err);
+      } catch (error) {
+        alert(error.message);
       }
     }
-    //post upload
+
     try {
       const res = await createPost(post);
-      navigate("/posts/post/" + res.data._id);
-    } catch (err) {
-      console.log(err);
+      navigate("/posts/post/" + res.data.data._id);
+    } catch (error) {
+      alert(error.message);
     }
   };
   return (
@@ -66,28 +73,32 @@ export default function CreatePost() {
         <h1 className="font-bold md:text-2xl text-xl ">Create a post</h1>
         <form className="w-full flex flex-col space-y-4 md:space-y-8 mt-4">
           <input
-            onChange={(e) => setTitle(e.target.value)}
+            name="title"
+            onChange={handleInputChange}
+            value={formData.title}
             type="text"
             placeholder="Enter post title"
-            className="px-4 py-2 outline-none"
+            className="px-4 py-2 outline-none bg-slate-100 rounded w-96"
           />
           <input
-            onChange={(e) => setFile(e.target.files[0])}
+            name="file"
+            onChange={handleInputChange}
             type="file"
-            className="px-4"
+            className="px-4 rounded"
           />
           <div className="flex flex-col">
             <div className="flex items-center space-x-4 md:space-x-8">
               <input
-                value={cat}
-                onChange={(e) => setCat(e.target.value)}
-                className="px-4 py-2 outline-none"
+                name="cat"
+                value={formData.cat}
+                onChange={handleInputChange}
+                className="px-4 py-2 outline-none bg-slate-100 rounded w-96"
                 placeholder="Enter post category"
                 type="text"
               />
               <div
                 onClick={addCategory}
-                className="bg-black text-white px-4 py-2 font-semibold cursor-pointer"
+                className="bg-black rounded text-white px-4 py-2 font-semibold cursor-pointer"
               >
                 Add
               </div>
@@ -95,10 +106,10 @@ export default function CreatePost() {
 
             {/* categories */}
             <div className="flex px-4 mt-3">
-              {cats?.map((c, i) => (
+              {formData.cats?.map((c, i) => (
                 <div
                   key={i}
-                  className="flex justify-center items-center space-x-2 mr-4 bg-gray-200 px-2 py-1 rounded-md"
+                  className="flex justify-center items-center space-x-2 mr-4 bg-slate-200 px-2 py-1 rounded-md"
                 >
                   <p>{c}</p>
                   <p
@@ -112,15 +123,17 @@ export default function CreatePost() {
             </div>
           </div>
           <textarea
-            onChange={(e) => setDesc(e.target.value)}
-            rows={15}
-            cols={30}
-            className="px-4 py-2 outline-none"
+            name="desc"
+            onChange={handleInputChange}
+            value={formData.desc}
+            rows={8}
+            cols={15}
+            className="px-4 py-2 outline-none bg-slate-100 rounded w-96"
             placeholder="Enter post description"
           />
           <button
             onClick={handleCreate}
-            className="bg-black w-full md:w-[20%] mx-auto text-white font-semibold px-4 py-2 md:text-xl text-lg"
+            className="bg-black rounded w-full md:w-[20%] text-white font-semibold px-4 py-2 md:text-xl text-lg"
           >
             Create
           </button>
