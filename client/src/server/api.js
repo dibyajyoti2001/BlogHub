@@ -1,5 +1,5 @@
 import Axios from "../Axios/Axios.js";
-import { LocalStorage } from "../utils";
+// import { LocalStorage } from "../utils";
 
 // Add an interceptor to set authorization header with user token before requests
 Axios.interceptors.request.use(
@@ -30,9 +30,9 @@ const refreshUser = (data) => {
   return Axios.post("/auth/refresh-token", data);
 };
 
-const refetchUser = () => {
-  return Axios.get("/auth/refetch-user", { withCredentials: true });
-};
+// const refetchUser = () => {
+//   return Axios.get("/auth/refetch-user", { withCredentials: true });
+// };
 
 const currentUser = () => {
   return Axios.get("/auth/current-user");
