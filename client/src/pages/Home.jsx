@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
-import { getAllPosts } from "../server/api";
+import { getAllPosts, refetchUser } from "../server/api";
 import { UserContext } from "../context/UserContext";
 
 export default function Home() {
