@@ -105,7 +105,7 @@ export {
   refreshUser,
   logoutUser,
   registerUser,
-  refetchUser,
+  // refetchUser,
   currentUser,
   updateUser,
   deleteUser,
