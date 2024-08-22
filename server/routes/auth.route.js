@@ -4,7 +4,7 @@ import {
   getCurrentUser,
   loginUser,
   logoutUser,
-  refetchUser,
+  // refetchUser,
   refreshAccessToken,
   registerUser,
   updateUserDetails,
@@ -19,7 +19,7 @@ router.route("/login").post(loginUser);
 // secured routes
 router.route("/logout").post(verifyJWT, logoutUser);
 router.route("/refresh-token").post(refreshAccessToken);
-router.route("/refetch-user").get(verifyJWT, refetchUser);
+// router.route("/refetch-user").get(verifyJWT, refetchUser);
 router.route("/current-user").get(verifyJWT, getCurrentUser);
 router.route("/update-account").patch(verifyJWT, updateUserDetails);
 router.route("/delete-user-details").delete(verifyJWT, deleteUserDetails);
