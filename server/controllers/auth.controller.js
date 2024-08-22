@@ -100,7 +100,8 @@ const loginUser = asyncHandler(async (req, res) => {
   // send to user by cookies
   const options = {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Strict",
   };
 
   return res
