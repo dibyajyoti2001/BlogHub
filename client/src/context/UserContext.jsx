@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { currentUser } from "../server/api";
+import { refetchUser } from "../server/api";
 
 export const UserContext = createContext({});
 
@@ -12,7 +12,7 @@ export function UserContextProvider({ children }) {
 
   const getUser = async () => {
     try {
-      const res = await currentUser();
+      const res = await refetchUser();
       setUser(res.data.data);
     } catch (error) {
       alert(error.message);
