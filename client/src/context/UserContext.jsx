@@ -1,11 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 import { refetchUser, refreshUser } from "../server/api";
 import { LocalStorage } from "../utils";
+import { useNavigate } from "react-router-dom";
 
 export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getUser();
@@ -30,11 +32,11 @@ export function UserContextProvider({ children }) {
           setUser(res.data.data);
         } catch (err) {
           setUser(null);
-          alert("Session expired, please log in again");
+          navigate("/login");
         }
       } else {
         setUser(null);
-        alert("An error occurred while fetching user data");
+        navigate("/login");
       }
     }
   };

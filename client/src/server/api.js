@@ -91,7 +91,6 @@ const deleteUser = async () => {
     LocalStorage.remove("accessToken");
     LocalStorage.remove("refreshToken");
   } catch (error) {
-    console.error("Delete user error:", error);
     throw error;
   }
 };

@@ -77,7 +77,7 @@ export default function PostDetails() {
     };
 
     try {
-      const res = await createComment(commentData);
+      await createComment(commentData);
       window.location.reload(true);
     } catch (error) {
       alert(error.message);
