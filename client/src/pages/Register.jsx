@@ -22,6 +22,7 @@ export default function Register() {
   const handleRegister = async () => {
     try {
       const res = await registerUser(formData);
+      console.log(res.data.data.user);
       setFormData({
         username: res.data.data.user.username,
         email: res.data.data.user.email,
