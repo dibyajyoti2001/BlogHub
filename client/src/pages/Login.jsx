@@ -10,7 +10,7 @@ export default function Login() {
   });
   const [error, setError] = useState(false);
   const navigate = useNavigate();
-  const { setUser, user } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,10 +19,6 @@ export default function Login() {
       [name]: value,
     }));
   };
-
-  for (const pair of formData.entries()) {
-    console.log(`${pair[0]}: ${pair[1]}`);
-  }
 
   const handleLogin = async () => {
     try {
@@ -34,7 +30,6 @@ export default function Login() {
       alert("Login error: " + error.message);
     }
   };
-  console.log("User data: " + user);
   return (
     <>
       <div className="flex items-center justify-between px-6 md:px-[200px] py-4">
