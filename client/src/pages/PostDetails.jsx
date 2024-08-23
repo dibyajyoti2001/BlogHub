@@ -96,6 +96,7 @@ export default function PostDetails() {
             <h1 className="text-2xl font-bold text-black md:text-3xl">
               {post.title}
             </h1>
+            {console.log(user)}
             {user?._id === post?.userId && (
               <div className="flex items-center justify-center space-x-2">
                 <p
