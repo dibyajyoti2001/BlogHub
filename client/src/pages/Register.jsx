@@ -19,6 +19,8 @@ export default function Register() {
     }));
   };
 
+  console.log("Form data: " + formData);
+
   const handleRegister = async () => {
     try {
       const res = await registerUser(formData);

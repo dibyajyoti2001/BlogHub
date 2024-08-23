@@ -20,6 +20,8 @@ export default function Login() {
     }));
   };
 
+  console.log("Form data: " + formData);
+
   const handleLogin = async () => {
     try {
       const res = await loginUser(formData);
