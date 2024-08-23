@@ -32,7 +32,7 @@ export function UserContextProvider({ children }) {
           setUser(res.data.data);
         } catch (err) {
           setUser(null);
-          navigate("/login");
+          alert("User not found when refresh");
         }
       } else {
         setUser(null);
