@@ -23,8 +23,7 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       const res = await loginUser(formData);
-      console.log(res.data.data.user);
-      setUser(res.data.data);
+      setUser(res.data.data.user);
       navigate("/");
     } catch (error) {
       setError(true);

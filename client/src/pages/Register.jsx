@@ -23,15 +23,15 @@ export default function Register() {
     try {
       const res = await registerUser(formData);
       setFormData({
-        username: res.data.data.username,
-        email: res.data.data.email,
-        password: res.data.data.password,
+        username: res.data.data.user.username,
+        email: res.data.data.user.email,
+        password: res.data.data.user.password,
       });
       setError(false);
       navigate("/login");
     } catch (error) {
       setError(true);
-      alert(error.message);
+      alert("Registration error: " + error.message);
     }
   };
 
