@@ -28,7 +28,7 @@ export default function Login() {
       navigate("/");
     } catch (error) {
       setError(true);
-      alert("Login error: " + error.message);
+      alert("Login error: " + (error.response?.data?.message || error.message));
     }
   };
   return (
