@@ -20,7 +20,9 @@ export default function Login() {
     }));
   };
 
-  console.log("Form data: " + formData);
+  for (const pair of formData.entries()) {
+    console.log(`${pair[0]}: ${pair[1]}`);
+  }
 
   const handleLogin = async () => {
     try {
