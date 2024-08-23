@@ -8,6 +8,7 @@ import {
   RouterProvider,
   createBrowserRouter,
   createRoutesFromElements,
+  useNavigate,
 } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
@@ -33,12 +34,20 @@ const router = createBrowserRouter(
   )
 );
 
-createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <UserContextProvider>
+function RootComponent() {
+  const navigate = useNavigate();
+
+  return (
+    <UserContextProvider navigate={navigate}>
       <RouterProvider router={router}>
         <App />
       </RouterProvider>
     </UserContextProvider>
+  );
+}
+
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <RootComponent />
   </StrictMode>
 );
