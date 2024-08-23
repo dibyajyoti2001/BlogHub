@@ -13,7 +13,6 @@ export function UserContextProvider({ children }) {
 
   const getUser = async () => {
     const token = LocalStorage.get("accessToken");
-    console.log("Retrieved token:", token);
 
     if (!token) {
       alert("Token not found");
