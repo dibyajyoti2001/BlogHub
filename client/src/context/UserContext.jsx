@@ -11,16 +11,14 @@ export function UserContextProvider({ children }) {
   }, []);
 
   const getUser = async () => {
+    const token = LocalStorage.get("token");
+    console.log("Token being sent:", token);
     try {
       const res = await refetchUser();
       setUser(res.data.data);
     } catch (error) {
-      console.error("Refetch user error:", error.response);
-      if (error.response && error.response.status === 401) {
-        alert("Session expired. Please log in again.");
-      } else {
-        alert(error.message);
-      }
+      console.error("Refetch user error:", error);
+      alert(error.message);
     }
   };
 
