@@ -23,13 +23,13 @@ export function UserContextProvider({ children }) {
       const res = await refetchUser();
       setUser(res.data.data);
     } catch (err) {
-      if (err.response?.status === 400) {
+      if (err.response?.status === 401) {
         try {
           const response = await refreshUser();
           console.log(response.data);
           const res = await refetchUser();
           setUser(res.data.data);
-        } catch (refreshErr) {
+        } catch (err) {
           setUser(null);
           alert("Session expired, please log in again");
         }
