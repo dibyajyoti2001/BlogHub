@@ -6,7 +6,6 @@ Axios.interceptors.request.use(
   function (config) {
     // Retrieve user token from local storage
     const token = LocalStorage.get("accessToken");
-    console.log("Interceptor token:", token);
 
     // Set authorization header with bearer token
     if (token) {
