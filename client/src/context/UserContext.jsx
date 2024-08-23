@@ -33,10 +33,12 @@ export function UserContextProvider({ children }) {
         } catch (refreshErr) {
           console.error("Refetch user error:", refreshErr);
           setUser(null);
+          setError("Session expired, please log in again.");
         }
       } else {
         console.error("Refetch user error:", err);
         setUser(null);
+        setError("An error occurred while fetching user data.");
       }
     } finally {
       setLoading(false);
@@ -44,7 +46,9 @@ export function UserContextProvider({ children }) {
   };
 
   return (
-    <UserContext.Provider value={{ user, loading, error }}>
+    <UserContext.Provider
+      value={{ user, loading, error, setUser, setLoading, setError }}
+    >
       {children}
     </UserContext.Provider>
   );

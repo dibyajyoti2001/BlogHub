@@ -8,9 +8,9 @@ export default function Login() {
     email: "",
     password: "",
   });
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
   const navigate = useNavigate();
-  const { setUser } = useContext(UserContext);
+  const { setUser, error, setError } = useContext(UserContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,13 +20,24 @@ export default function Login() {
     }));
   };
 
+  // const handleLogin = async () => {
+  //   try {
+  //     const res = await loginUser(formData);
+  //     setUser(res.data);
+  //     navigate("/");
+  //   } catch (error) {
+  //     setError(true);
+  //     alert(error.message);
+  //   }
+  // };
+
   const handleLogin = async () => {
     try {
       const res = await loginUser(formData);
-      setUser(res.data);
+      setUser(res.data.data);
       navigate("/");
     } catch (error) {
-      setError(true);
+      setError("Login failed. Please check your credentials.");
       alert(error.message);
     }
   };

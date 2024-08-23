@@ -32,7 +32,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchPosts();
-  }, [search]);
+  }, [search, user]);
 
   return (
     <>
