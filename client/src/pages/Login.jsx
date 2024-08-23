@@ -23,11 +23,12 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       const res = await loginUser(formData);
+      console.log(res.data.data);
       setUser(res.data.data);
       navigate("/");
     } catch (error) {
       setError(true);
-      alert(error.message);
+      alert("Login error: " + error.message);
     }
   };
   return (
