@@ -19,13 +19,14 @@ export default function Register() {
     }));
   };
 
-  const handleRegister = async () => {
+  const handleRegister = async (e) => {
+    e.preventDefault();
     try {
-      const res = await registerUser(formData);
+      await registerUser(formData);
       setFormData({
-        username: res.data.data.user.username,
-        email: res.data.data.user.email,
-        password: res.data.data.user.password,
+        username: "",
+        email: "",
+        password: "",
       });
       setError(false);
       navigate("/login");
@@ -73,6 +74,7 @@ export default function Register() {
             placeholder="Enter your password"
           />
           <button
+            type="submit"
             onClick={handleRegister}
             className="w-full px-4 py-4 text-lg font-bold text-white bg-black rounded-lg"
           >

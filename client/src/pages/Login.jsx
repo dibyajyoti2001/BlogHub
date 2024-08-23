@@ -20,7 +20,8 @@ export default function Login() {
     }));
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
       const res = await loginUser(formData);
       setUser(res.data.data.user);
@@ -62,6 +63,7 @@ export default function Login() {
             placeholder="Enter your password"
           />
           <button
+            type="submit"
             onClick={handleLogin}
             className="w-full px-4 py-4 text-lg font-bold text-white bg-black rounded-lg"
           >
