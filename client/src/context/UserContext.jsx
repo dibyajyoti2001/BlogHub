@@ -1,13 +1,11 @@
 import { createContext, useEffect, useState } from "react";
 import { refetchUser, refreshUser } from "../server/api";
-import { useNavigate } from "react-router-dom";
 import { LocalStorage } from "../utils";
 
 export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate();
 
   const getUser = async () => {
     const token = LocalStorage.get("accessToken");
@@ -41,11 +39,11 @@ export function UserContextProvider({ children }) {
             err.response || err.message
           );
           setUser(null);
-          navigate("/login");
+          alert(err.message);
         }
       } else {
         setUser(null);
-        navigate("/login");
+        alert(err.message);
       }
     }
   };
