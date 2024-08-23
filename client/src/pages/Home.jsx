@@ -25,6 +25,7 @@ export default function Home() {
       }
       setLoader(false);
     } catch (error) {
+      console.error(error.response.data);
       alert(error.message);
       setLoader(false);
     }
