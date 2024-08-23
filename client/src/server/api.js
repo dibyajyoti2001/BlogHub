@@ -4,6 +4,8 @@ import Axios from "../Axios/Axios.js";
 // Add an interceptor to set authorization header with user token before requests
 Axios.interceptors.request.use(
   function (config) {
+    console.log("Request Headers:", config.headers);
+    console.log("Request Cookies:", document.cookie);
     config.withCredentials = true;
     return config;
   },
