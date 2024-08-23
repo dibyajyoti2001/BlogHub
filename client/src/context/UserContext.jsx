@@ -6,8 +6,6 @@ export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     getUser();
@@ -15,8 +13,9 @@ export function UserContextProvider({ children }) {
 
   const getUser = async () => {
     const token = LocalStorage.get("accessToken");
+
     if (!token) {
-      setLoading(false);
+      alert("Token not found");
       return;
     }
 
@@ -25,20 +24,17 @@ export function UserContextProvider({ children }) {
       setUser(res.data.data);
     } catch (err) {
       if (err.response?.status === 401) {
-        // Token might be expired; try refreshing
         try {
           await refreshUser();
           const res = await refetchUser();
           setUser(res.data.data);
         } catch (refreshErr) {
-          console.error("Refetch user error:", refreshErr);
           setUser(null);
-          setError("Session expired, please log in again.");
+          alert("Session expired, please log in again");
         }
       } else {
-        console.error("Refetch user error:", err);
         setUser(null);
-        setError("An error occurred while fetching user data.");
+        alert("An error occurred while fetching user data");
       }
     } finally {
       setLoading(false);
@@ -46,9 +42,7 @@ export function UserContextProvider({ children }) {
   };
 
   return (
-    <UserContext.Provider
-      value={{ user, loading, error, setUser, setLoading, setError }}
-    >
+    <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
   );

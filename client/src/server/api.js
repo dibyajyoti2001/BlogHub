@@ -5,7 +5,7 @@ import { LocalStorage } from "../utils";
 Axios.interceptors.request.use(
   function (config) {
     // Retrieve user token from local storage
-    const token = LocalStorage.get("accessToken"); // Ensure this matches the token stored
+    const token = LocalStorage.get("accessToken");
 
     // Set authorization header with bearer token
     if (token) {
@@ -26,13 +26,11 @@ const loginUser = async (data) => {
     const response = await Axios.post("/auth/login", data);
     const { accessToken, refreshToken } = response.data.data;
 
-    // Store tokens in localStorage
     LocalStorage.set("accessToken", accessToken);
     LocalStorage.set("refreshToken", refreshToken);
 
     return response;
   } catch (error) {
-    console.error("Login error:", error);
     throw error;
   }
 };
@@ -44,11 +42,10 @@ const registerUser = (data) => {
 const logoutUser = async () => {
   try {
     await Axios.post("/auth/logout");
-    // Clear tokens from localStorage
+
     LocalStorage.remove("accessToken");
     LocalStorage.remove("refreshToken");
   } catch (error) {
-    console.error("Logout error:", error);
     throw error;
   }
 };
@@ -62,13 +59,11 @@ const refreshUser = async () => {
     );
     const { accessToken, refreshToken } = response.data.data;
 
-    // Update tokens in localStorage
     LocalStorage.set("accessToken", accessToken);
     LocalStorage.set("refreshToken", refreshToken);
 
     return response;
   } catch (error) {
-    console.error("Refresh token error:", error);
     throw error;
   }
 };
@@ -77,7 +72,6 @@ const refetchUser = async () => {
   try {
     return await Axios.get("/auth/refetch-user", { withCredentials: true });
   } catch (error) {
-    console.error("Refetch user error:", error);
     throw error;
   }
 };
@@ -93,7 +87,7 @@ const updateUser = (data) => {
 const deleteUser = async () => {
   try {
     await Axios.delete("/auth/delete-user-details");
-    // Clear tokens from localStorage
+
     LocalStorage.remove("accessToken");
     LocalStorage.remove("refreshToken");
   } catch (error) {
