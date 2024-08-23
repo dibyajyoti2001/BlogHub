@@ -5,11 +5,13 @@ import { LocalStorage } from "../utils";
 Axios.interceptors.request.use(
   function (config) {
     // Retrieve user token from local storage
-    const token = LocalStorage.get("token");
+    const token = LocalStorage.get("accessToken"); // Ensure this matches the token stored
+
     // Set authorization header with bearer token
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   function (error) {
@@ -19,8 +21,20 @@ Axios.interceptors.request.use(
 
 // API functions for different actions
 // Auth routes
-const loginUser = (data) => {
-  return Axios.post("/auth/login", data);
+const loginUser = async (data) => {
+  try {
+    const response = await Axios.post("/auth/login", data);
+    const { accessToken, refreshToken } = response.data.data;
+
+    // Store tokens in localStorage
+    LocalStorage.set("accessToken", accessToken);
+    LocalStorage.set("refreshToken", refreshToken);
+
+    return response;
+  } catch (error) {
+    console.error("Login error:", error);
+    throw error;
+  }
 };
 
 const registerUser = (data) => {

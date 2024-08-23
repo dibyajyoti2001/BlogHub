@@ -12,10 +12,11 @@ export function UserContextProvider({ children }) {
   }, []);
 
   const getUser = async () => {
-    const token = LocalStorage.get("token");
-    console.log("Token being sent:", token);
+    const token = LocalStorage.get("accessToken");
+    console.log("Token being sent:", token); // Should print the token
+
     try {
-      const res = await refetchUser();
+      const res = await refetchUser(); // This request will use the token in the interceptor
       setUser(res.data.data);
     } catch (error) {
       console.error("Refetch user error:", error);
