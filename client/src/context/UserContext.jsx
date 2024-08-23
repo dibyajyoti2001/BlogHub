@@ -23,6 +23,7 @@ export function UserContextProvider({ children }) {
       const res = await refetchUser();
       setUser(res.data.data);
     } catch (err) {
+      alert("Error fetching user: ", err);
       if (err.response?.status === 400) {
         try {
           const response = await refreshUser();
