@@ -1,13 +1,13 @@
 import { createContext, useEffect, useState } from "react";
 import { refetchUser, refreshUser } from "../server/api";
 import { LocalStorage } from "../utils";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     getUser();
