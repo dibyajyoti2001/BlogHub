@@ -193,7 +193,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
         )
       );
   } catch (error) {
-    throw new ApiError(401, error?.message || "Invalid refresh token");
+    throw new ApiError(400, error?.message || "Invalid refresh token");
   }
 });
 
@@ -219,7 +219,7 @@ const refetchUser = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, user, "User refetched successfully"));
   } catch (error) {
-    throw new ApiError(401, error.message || "Invalid or expired token");
+    throw new ApiError(400, error.message || "Invalid or expired token");
   }
 });
 

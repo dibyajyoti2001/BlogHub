@@ -72,7 +72,6 @@ const refetchUser = async () => {
   try {
     return await Axios.get("/auth/refetch-user", { withCredentials: true });
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };
