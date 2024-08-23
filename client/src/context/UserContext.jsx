@@ -1,11 +1,13 @@
 import { createContext, useEffect, useState } from "react";
-import { refetchUser } from "../server/api";
+import { refetchUser, refreshUser } from "../server/api";
 import { LocalStorage } from "../utils";
 
 export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     getUser();
@@ -13,19 +15,36 @@ export function UserContextProvider({ children }) {
 
   const getUser = async () => {
     const token = LocalStorage.get("accessToken");
-    console.log("Token being sent:", token); // Should print the token
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
     try {
-      const res = await refetchUser(); // This request will use the token in the interceptor
+      const res = await refetchUser();
       setUser(res.data.data);
-    } catch (error) {
-      console.error("Refetch user error:", error);
-      alert(error.message);
+    } catch (err) {
+      if (err.response?.status === 401) {
+        // Token might be expired; try refreshing
+        try {
+          await refreshUser();
+          const res = await refetchUser();
+          setUser(res.data.data);
+        } catch (refreshErr) {
+          console.error("Refetch user error:", refreshErr);
+          setUser(null);
+        }
+      } else {
+        console.error("Refetch user error:", err);
+        setUser(null);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, loading, error }}>
       {children}
     </UserContext.Provider>
   );

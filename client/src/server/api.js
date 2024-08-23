@@ -41,16 +41,45 @@ const registerUser = (data) => {
   return Axios.post("/auth/register", data);
 };
 
-const logoutUser = () => {
-  return Axios.post("/auth/logout");
+const logoutUser = async () => {
+  try {
+    await Axios.post("/auth/logout");
+    // Clear tokens from localStorage
+    LocalStorage.remove("accessToken");
+    LocalStorage.remove("refreshToken");
+  } catch (error) {
+    console.error("Logout error:", error);
+    throw error;
+  }
 };
 
-const refreshUser = (data) => {
-  return Axios.post("/auth/refresh-token", data);
+const refreshUser = async () => {
+  try {
+    const response = await Axios.post(
+      "/auth/refresh-token",
+      {},
+      { withCredentials: true }
+    );
+    const { accessToken, refreshToken } = response.data.data;
+
+    // Update tokens in localStorage
+    LocalStorage.set("accessToken", accessToken);
+    LocalStorage.set("refreshToken", refreshToken);
+
+    return response;
+  } catch (error) {
+    console.error("Refresh token error:", error);
+    throw error;
+  }
 };
 
-const refetchUser = () => {
-  return Axios.get("/auth/refetch-user");
+const refetchUser = async () => {
+  try {
+    return await Axios.get("/auth/refetch-user", { withCredentials: true });
+  } catch (error) {
+    console.error("Refetch user error:", error);
+    throw error;
+  }
 };
 
 const currentUser = () => {
@@ -61,8 +90,16 @@ const updateUser = (data) => {
   return Axios.patch("/auth/update-account", data);
 };
 
-const deleteUser = () => {
-  return Axios.delete("/auth/delete-user-details");
+const deleteUser = async () => {
+  try {
+    await Axios.delete("/auth/delete-user-details");
+    // Clear tokens from localStorage
+    LocalStorage.remove("accessToken");
+    LocalStorage.remove("refreshToken");
+  } catch (error) {
+    console.error("Delete user error:", error);
+    throw error;
+  }
 };
 
 // Comment routes
