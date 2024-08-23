@@ -7,10 +7,6 @@ export const UserContext = createContext({});
 export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    getUser();
-  }, []);
-
   const getUser = async () => {
     const token = LocalStorage.get("accessToken");
     console.log("Token retrieved from local storage:", token);
@@ -51,6 +47,10 @@ export function UserContextProvider({ children }) {
       }
     }
   };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
