@@ -36,8 +36,6 @@ export function UserContextProvider({ children }) {
         setUser(null);
         alert("An error occurred while fetching user data");
       }
-    } finally {
-      setLoading(false);
     }
   };
 
