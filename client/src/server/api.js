@@ -53,16 +53,19 @@ const logoutUser = async () => {
 
 const refreshUser = async () => {
   try {
+    console.log("Attempting to refresh token...");
     const response = await Axios.post(
       "/auth/refresh-token",
       {},
       { withCredentials: true }
     );
+    console.log("Token refresh response:", response.data);
     const { accessToken, refreshToken } = response.data.data;
 
     LocalStorage.set("accessToken", accessToken);
     LocalStorage.set("refreshToken", refreshToken);
 
+    console.log("New accessToken:", accessToken);
     return response;
   } catch (error) {
     throw error;
