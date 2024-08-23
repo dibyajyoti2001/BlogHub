@@ -23,6 +23,7 @@ export function UserContextProvider({ children }) {
 
     try {
       const res = await refetchUser();
+      console.log(res.data.data);
       setUser(res.data.data);
     } catch (err) {
       if (err.response?.status === 401) {
@@ -36,7 +37,7 @@ export function UserContextProvider({ children }) {
         }
       } else {
         setUser(null);
-        navigate("/login");
+        alert("User not found");
       }
     }
   };
