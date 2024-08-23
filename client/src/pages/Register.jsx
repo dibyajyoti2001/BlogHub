@@ -23,9 +23,9 @@ export default function Register() {
     try {
       const res = await registerUser(formData);
       setFormData({
-        username: res.data.username,
-        email: res.data.email,
-        password: res.data.password,
+        username: res.data.data.username,
+        email: res.data.data.email,
+        password: res.data.data.password,
       });
       setError(false);
       navigate("/login");
