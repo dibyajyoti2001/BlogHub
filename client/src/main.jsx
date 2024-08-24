@@ -26,9 +26,9 @@ const router = createBrowserRouter(
         exact
         path="/"
         element={
-          // <AuthLayout>
-          <Home />
-          // </AuthLayout>
+          <AuthLayout>
+            <Home />
+          </AuthLayout>
         }
       />
       <Route exact path="/login" element={<Login />} />
