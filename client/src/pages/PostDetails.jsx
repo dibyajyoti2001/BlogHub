@@ -70,9 +70,6 @@ export default function PostDetails() {
 
     try {
       await createComment(commentData);
-      console.log("Comment added successfully");
-      console.log("Navigating to:", `/posts/post/${post._id}`);
-      navigate(`/posts/post/${postId}`, { replace: true });
     } catch (error) {
       alert(error.message);
     }
@@ -149,7 +146,10 @@ export default function PostDetails() {
               className="md:w-[80%] outline-none py-2 px-4 mt-4 md:mt-0 mr-5 bg-slate-100 rounded"
             />
             <button
-              onClick={handleAddComment}
+              onClick={() => {
+                handleAddComment();
+                navigate(`/posts/post/${post._id}`);
+              }}
               className="bg-black text-sm rounded text-white px-2 py-2 md:w-[20%] mt-4 md:mt-0"
             >
               Add Comment
