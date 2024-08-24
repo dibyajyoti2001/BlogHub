@@ -29,7 +29,7 @@ export default function Login() {
     } catch (error) {
       setError(true);
       console.error("Login error:", error);
-      alert("Login error: " + (error.response?.data?.message || error.message));
+      alert("Login error: " + error.message);
     }
   };
   return (

@@ -32,11 +32,7 @@ export default function Register() {
       navigate("/login");
     } catch (error) {
       setError(true);
-      console.error("Registration error:", error);
-      alert(
-        "Registration error: " +
-          (error.response?.data?.message || error.message)
-      );
+      alert("Registration error: " + error.message);
     }
   };
 

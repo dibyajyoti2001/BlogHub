@@ -17,6 +17,7 @@ import PostDetails from "./pages/PostDetails.jsx";
 import EditPost from "./pages/EditPost.jsx";
 import MyBlogs from "./pages/MyBlogs.jsx";
 import Profile from "./pages/Profile.jsx";
+import AuthLayout from "./components/AuthLayout.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,11 +25,51 @@ const router = createBrowserRouter(
       <Route exact path="/" element={<Home />} />
       <Route exact path="/login" element={<Login />} />
       <Route exact path="/register" element={<Register />} />
-      <Route exact path="/write" element={<CreatePost />} />
-      <Route exact path="/posts/post/:id" element={<PostDetails />} />
-      <Route exact path="/edit/:id" element={<EditPost />} />
-      <Route exact path="/myblogs/:id" element={<MyBlogs />} />
-      <Route exact path="/profile/:id" element={<Profile />} />
+      <Route
+        exact
+        path="/write"
+        element={
+          <AuthLayout>
+            <CreatePost />
+          </AuthLayout>
+        }
+      />
+      <Route
+        exact
+        path="/posts/post/:id"
+        element={
+          <AuthLayout>
+            <PostDetails />
+          </AuthLayout>
+        }
+      />
+      <Route
+        exact
+        path="/edit/:id"
+        element={
+          <AuthLayout>
+            <EditPost />
+          </AuthLayout>
+        }
+      />
+      <Route
+        exact
+        path="/myblogs/:id"
+        element={
+          <AuthLayout>
+            <MyBlogs />
+          </AuthLayout>
+        }
+      />
+      <Route
+        exact
+        path="/profile/:id"
+        element={
+          <AuthLayout>
+            <Profile />
+          </AuthLayout>
+        }
+      />
     </Route>
   )
 );
