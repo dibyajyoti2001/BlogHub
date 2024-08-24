@@ -17,7 +17,7 @@ import PostDetails from "./pages/PostDetails.jsx";
 import EditPost from "./pages/EditPost.jsx";
 import MyBlogs from "./pages/MyBlogs.jsx";
 import Profile from "./pages/Profile.jsx";
-import AuthLayout from "./components/AuthLayout.js";
+import AuthLayout from "./components/AuthLayout.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
