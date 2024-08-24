@@ -22,7 +22,15 @@ import AuthLayout from "./components/AuthLayout.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route exact path="/" element={<Home />} />
+      <Route
+        exact
+        path="/"
+        element={
+          <AuthLayout>
+            <Home />
+          </AuthLayout>
+        }
+      />
       <Route exact path="/login" element={<Login />} />
       <Route exact path="/register" element={<Register />} />
       <Route
