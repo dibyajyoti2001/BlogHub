@@ -42,10 +42,6 @@ export default function PostDetails() {
     }
   };
 
-  useEffect(() => {
-    fetchPost();
-  }, [postId]);
-
   const fetchPostComments = async () => {
     setLoader(true);
     try {
@@ -57,10 +53,6 @@ export default function PostDetails() {
       alert(error.message);
     }
   };
-
-  useEffect(() => {
-    fetchPostComments();
-  }, [postId]);
 
   const handleAddComment = async (e) => {
     e.preventDefault();
@@ -78,11 +70,16 @@ export default function PostDetails() {
 
     try {
       await createComment(commentData);
-      navigate(`/posts/post/${post._id}`);
+      navigate(`/posts/post/${postId}`);
     } catch (error) {
       alert(error.message);
     }
   };
+
+  useEffect(() => {
+    fetchPost();
+    fetchPostComments();
+  }, [postId]);
   return (
     <div>
       <Navbar />
