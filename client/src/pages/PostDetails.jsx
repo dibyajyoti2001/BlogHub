@@ -11,6 +11,7 @@ import {
   deletePost,
   postComment,
   getPostById,
+  deleteComment,
 } from "../server/api";
 import { UserContext } from "../context/UserContext";
 
@@ -77,6 +78,15 @@ export default function PostDetails() {
     }
   };
 
+  const handleDeleteComment = async (id) => {
+    try {
+      await deleteComment(id);
+      await fetchPostComments();
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   useEffect(() => {
     fetchPost();
     fetchPostComments();
@@ -136,7 +146,12 @@ export default function PostDetails() {
           <div className="flex flex-col mt-4">
             <h3 className="mt-6 mb-4 font-semibold">Comments:</h3>
             {comments?.map((c) => (
-              <Comment key={c._id} c={c} post={post} />
+              <Comment
+                key={c._id}
+                c={c}
+                post={post}
+                onDeleteComment={handleDeleteComment}
+              />
             ))}
           </div>
           {/* write a comment */}

@@ -1,17 +1,13 @@
 import { MdDelete } from "react-icons/md";
-import { deleteComment } from "../server/api";
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 
-export default function Comment({ c, post }) {
+export default function Comment({ c, onDeleteComment }) {
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
 
   const handleDeleteComment = async (id) => {
     try {
-      await deleteComment(id);
-      navigate(0);
+      await onDeleteComment(id);
     } catch (error) {
       alert(error.message);
     }
