@@ -147,8 +147,8 @@ export default function PostDetails() {
             />
             <button
               onClick={() => {
-                handleAddComment();
                 navigate(`/posts/post/${post._id}`);
+                handleAddComment();
               }}
               className="bg-black text-sm rounded text-white px-2 py-2 md:w-[20%] mt-4 md:mt-0"
             >
