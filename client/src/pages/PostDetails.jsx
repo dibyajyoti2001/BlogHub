@@ -70,6 +70,7 @@ export default function PostDetails() {
 
     try {
       await createComment(commentData);
+      setComment("");
     } catch (error) {
       alert(error.message);
     }
@@ -146,10 +147,7 @@ export default function PostDetails() {
               className="md:w-[80%] outline-none py-2 px-4 mt-4 md:mt-0 mr-5 bg-slate-100 rounded"
             />
             <button
-              onClick={() => {
-                navigate(`/posts/post/${post._id}`);
-                handleAddComment();
-              }}
+              onClick={handleAddComment}
               className="bg-black text-sm rounded text-white px-2 py-2 md:w-[20%] mt-4 md:mt-0"
             >
               Add Comment
