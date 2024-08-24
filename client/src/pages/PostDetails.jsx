@@ -72,7 +72,7 @@ export default function PostDetails() {
       await createComment(commentData);
       console.log("Comment added successfully");
       console.log("Navigating to:", `/posts/post/${post._id}`);
-      navigate(`/posts/post/${postId}`);
+      navigate(`/posts/post/${postId}`, { replace: true });
     } catch (error) {
       alert(error.message);
     }
