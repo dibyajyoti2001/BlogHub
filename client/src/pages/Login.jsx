@@ -28,7 +28,6 @@ export default function Login() {
       navigate("/");
     } catch (error) {
       setError(true);
-      console.error("Login error:", error);
       alert("Login error: " + error.message);
     }
   };
