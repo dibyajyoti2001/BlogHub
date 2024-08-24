@@ -29,7 +29,7 @@ export function UserContextProvider({ children }) {
         }
       } else {
         setUser(null);
-        alert(error.message);
+        return;
       }
     }
   };
