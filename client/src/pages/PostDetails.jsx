@@ -71,6 +71,7 @@ export default function PostDetails() {
     try {
       await createComment(commentData);
       setComment("");
+      navigate(0);
     } catch (error) {
       alert(error.message);
     }

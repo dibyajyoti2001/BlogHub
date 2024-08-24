@@ -11,6 +11,7 @@ export default function Comment({ c, post }) {
   const handleDeleteComment = async (id) => {
     try {
       await deleteComment(id);
+      navigate(0);
     } catch (error) {
       alert(error.message);
     }
