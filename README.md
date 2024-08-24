@@ -49,8 +49,8 @@ BlogHub is a full-stack blog platform built using the MERN stack (MongoDB, Expre
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/bloghub-backend.git
-   cd bloghub-backend
+   git clone https://github.com/dibyajyoti2001/BlogHub.git
+   cd BlogHub/server
 2. Install dependencies:
    npm install
 3. Create a .env file with the following environment variables:
@@ -61,13 +61,15 @@ BlogHub is a full-stack blog platform built using the MERN stack (MongoDB, Expre
 
 ### Frontend Setup
 
-1. Navigate to the frontend directory:
-   cd bloghub-client
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/dibyajyoti2001/BlogHub.git
+   cd BlogHub/client
 2. Install dependencies:
    npm install
 3. Create a .env file with the following environment variable:
-   REACT_APP_API_URL=<your-backend-api-url>
-   REACT_APP_IMAGE_URL=<your-backend-image-url>
+   VITE_SERVER_URL=<your-backend-api-url>
+   VITE_IMAGES=<your-backend-image-url>
 4. Start the frontend server:
    npm run dev
 
@@ -82,13 +84,18 @@ Deployed link: https://bloghub-client.onrender.com
 
 Contributions are welcome! If you have suggestions or improvements, please follow these steps:
 
-1: Fork the repository.
-2: Create a new branch with a descriptive name for your feature or fix: 
+1: Fork the repository:
+   git clone https://github.com/dibyajyoti2001/BlogHub.git
+   
+2: Create a new branch with a descriptive name for your feature or fix:
    git checkout -b feature/your-feature-name
+   
 3: Make your changes and commit them with clear commit messages:
    git commit -m "Add a descriptive commit message"
+   
 4: Push your branch to your forked repository:
    git push origin feature/your-feature-name
+   
 5: Open a Pull Request on the original repository with a detailed explanation of your changes.
 
 ## License
