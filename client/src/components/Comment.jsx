@@ -8,7 +8,7 @@ export default function Comment({ c, post }) {
   const handleDeleteComment = async (id) => {
     try {
       await deleteComment(id);
-      window.location.reload(true);
+      navigate(`/posts/post/${post._id}`);
     } catch (error) {
       alert(error.message);
     }

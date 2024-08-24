@@ -78,7 +78,7 @@ export default function PostDetails() {
 
     try {
       await createComment(commentData);
-      window.location.reload(true);
+      navigate(`/posts/post/${post._id}`);
     } catch (error) {
       alert(error.message);
     }
