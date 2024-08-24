@@ -47,10 +47,10 @@ export default function PostDetails() {
     try {
       const res = await postComment(postId);
       setComments(res.data.data);
-      setLoader(false);
     } catch (error) {
-      setLoader(true);
       alert(error.message);
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -71,7 +71,7 @@ export default function PostDetails() {
     try {
       await createComment(commentData);
       setComment("");
-      navigate(0);
+      await fetchPostComments();
     } catch (error) {
       alert(error.message);
     }
